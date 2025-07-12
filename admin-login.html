@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - Skill Swap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-purple-100 to-blue-100 min-h-screen flex items-center justify-center px-4">
+  <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm">
+    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
+
+    <input id="email" type="email" placeholder="Admin Email"
+      class="w-full mb-4 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" />
+
+    <input id="password" type="password" placeholder="Password"
+      class="w-full mb-6 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" />
+
+    <button id="loginAdminBtn"
+      class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-md">Log In as Admin</button>
+  </div>
+
+  <script type="module" src="admin-login.js"></script>
+</body>
+</html>
