@@ -43,7 +43,7 @@ window.login = async function () {
 
     if (userSnap.exists()) {
       const role = userSnap.data().role || "user";
-      window.location.href = `homepage1.html?role=${role}`;
+      window.location.href = `profile.html?role=${role}`;
     } else {
       alert("User data not found. Contact support.");
     }
