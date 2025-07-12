@@ -1,0 +1,227 @@
+/* profilestyle.css */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f7f7f7;
+  color: #333;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #1e2a38;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.sidebar nav {
+  width: 100%;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s;
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+  background-color: #2f3d4d;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+  background-color: white;
+}
+
+h2 {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.button-group {
+  margin-top: 30px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.save {
+  background-color: #007bff;
+  color: white;
+}
+
+.discard {
+  background-color: #dc3545;
+  color: white;
+}
+
+.tag-input-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+}
+
+.tag-input-wrapper input {
+  border: none;
+  flex: 1;
+  min-width: 100px;
+  background: transparent;
+  font-size: 14px;
+  outline: none;
+}
+
+.tag {
+  background: #e1e1e1;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tag span {
+  cursor: pointer;
+  color: red;
+  font-weight: bold;
+}
+
+.suggestion-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.suggestion {
+  background-color: white;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.suggestion:hover {
+  background-color: #e0e0e0;
+}
+.sidebar {
+  width: 250px;
+  background-color: #1f2d3d;
+  min-height: 100vh;
+  padding-top: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar-profile {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.sidebar-profile-pic-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.sidebar-profile-pic-wrapper img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  object-fit: cover;
+}
+
+.sidebar-profile-pic-wrapper .edit-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #007bff;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  padding: 4px 6px;
+  cursor: pointer;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar-menu li {
+  padding: 15px 25px;
+  cursor: pointer;
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-menu li:hover {
+  background-color: #32475b;
+}
+
+
