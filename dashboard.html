@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+  <div class="bg-white p-8 rounded-xl shadow-md text-center max-w-lg">
+    <h2 id="welcomeMessage" class="text-2xl font-bold mb-4">Welcome!</h2>
+    <button onclick="logout()" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">
+      Log Out
+    </button>
+  </div>
+
+  <script type="module">
+    import { auth } from './firebase.js';
+    import { signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    const params = new URLSearchParams(window.location.search);
+    const role = params.get("role");
+    const welcomeEl = document.getElementById("welcomeMessage");
+
+    welcomeEl.textContent = role === "admin"
+      ? "👑 Welcome, Admin!"
+      : "👤 Welcome, Skill Swapper!";
+
+    window.logout = function () {
+      signOut(auth).then(() => {
+        window.location.href = "index.html";
+      });
+    };
+  </script>
+</body>
+</html>
