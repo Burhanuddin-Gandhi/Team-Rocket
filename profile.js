@@ -101,3 +101,59 @@ const skillOptions = [
 
 initTagInput("skillsOffered", skillOptions);
 initTagInput("skillsWanted", skillOptions);
+function showToastAndRedirect() {
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+    window.location.href = "homepage1.html";
+  }, 2000); // Wait 2 seconds before redirect
+}
+
+document.querySelector('.btn.save').addEventListener('click', async (e) => {
+  e.preventDefault();
+
+  // ✅ Collect user data from form fields
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+  const contact = document.getElementById('contact').value.trim();
+  const country = document.getElementById('country').value;
+  const state = document.getElementById('state').value;
+  const city = document.getElementById('city').value;
+
+  const skillsOffered = Array.from(document.querySelectorAll('#skillsOffered .tag')).map(tag => tag.textContent.replace('×', '').trim());
+  const skillsWanted = Array.from(document.querySelectorAll('#skillsWanted .tag')).map(tag => tag.textContent.replace('×', '').trim());
+
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  const user = auth.currentUser;
+  if (!user) {
+    alert("User not logged in.");
+    return;
+  }
+
+  try {
+    await db.collection("users").doc(user.uid).update({
+      firstName,
+      lastName,
+      contact,
+      country,
+      state,
+      city,
+      skillsOffered,
+      skillsWanted
+    });
+
+    // ✅ Redirect after successful save
+    window.location.href = "homepage.html";
+  } catch (error) {
+    console.error("Error saving profile:", error);
+    alert("Failed to save profile.");
+  }
+});
+
+document.querySelector('.btn.discard').addEventListener('click', () => {
+  window.location.reload(); // or window.location.href = 'homepage.html';
+});
