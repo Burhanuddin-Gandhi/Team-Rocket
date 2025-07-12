@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skill Swap - Find People</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .blurred { filter: blur(4px); pointer-events: none; }
+    #searchSuggestions {
+      position: absolute;
+      top: 100%;
+      margin-top: 0.25rem;
+      right: 0;
+      z-index: 30;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans px-6 pt-10 relative">
+
+  <!-- Breadcrumb -->
+  <nav class="text-sm text-gray-800 mb-10 font-semibold">
+    <ol class="list-reset flex gap-4">
+      <li><a href="#" class="text-blue-600 hover:underline">Home</a></li>
+      <li><a href="#" class="hover:underline">About Us</a></li>
+      <li><a href="#" class="hover:underline">Help</a></li>
+      <li><a href="#" class="hover:underline">Feedback</a></li>
+    </ol>
+  </nav>
+
+  <!-- Greeting and Profile Picture -->
+  <div class="flex items-center gap-4 mb-8" id="mainContent">
+    <img id="userPhoto" src="" alt="Profile" class="w-12 h-12 rounded-full border shadow" />
+    <h2 class="text-lg font-semibold" id="greeting">Hello, User</h2>
+  </div>
+
+  <!-- Search + Filter Button -->
+  <div class="flex flex-col md:flex-row justify-end items-center gap-4 mb-6 relative" id="mainSearch">
+    <button onclick="toggleFilters()"
+            class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 text-sm">
+      Filters
+    </button>
+
+    <div class="relative w-full md:w-1/3">
+      <input type="text" id="searchInput" placeholder="Search..."
+             class="w-full px-4 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400" oninput="liveSearchProfiles()" />
+      <div id="searchSuggestions" class="hidden bg-white border rounded-lg shadow-lg p-4 absolute w-full"></div>
+    </div>
+  </div>
+
+  <!-- Filter Popup -->
+  <div id="filterPanel" class="hidden bg-white border rounded p-6 mb-8 shadow-md">
+    <div class="grid md:grid-cols-3 gap-4">
+      <!-- Availability -->
+      <div>
+        <h4 class="font-semibold mb-2">Availability</h4>
+        <div class="flex flex-col gap-2">
+          <label><input type="checkbox" value="anytime" class="availability"> Anytime</label>
+          <label><input type="checkbox" value="morning" class="availability"> Morning</label>
+          <label><input type="checkbox" value="afternoon" class="availability"> Afternoon</label>
+          <label><input type="checkbox" value="evening" class="availability"> Evening</label>
+        </div>
+      </div>
+      <!-- Skills Wanted -->
+      <div>
+        <h4 class="font-semibold mb-2">Skills Wanted</h4>
+        <div class="flex flex-col gap-2">
+          <label><input type="checkbox" value="web development" class="skills-wanted"> Web Development</label>
+          <label><input type="checkbox" value="graphic design" class="skills-wanted"> Graphic Design</label>
+          <label><input type="checkbox" value="public speaking" class="skills-wanted"> Public Speaking</label>
+          <label><input type="checkbox" value="photography" class="skills-wanted"> Photography</label>
+        </div>
+      </div>
+      <!-- Skills Offered -->
+      <div>
+        <h4 class="font-semibold mb-2">Skills Offered</h4>
+        <div class="flex flex-col gap-2">
+          <label><input type="checkbox" value="video editing" class="skills-offered"> Video Editing</label>
+          <label><input type="checkbox" value="coding" class="skills-offered"> Coding</label>
+          <label><input type="checkbox" value="content writing" class="skills-offered"> Content Writing</label>
+          <label><input type="checkbox" value="music" class="skills-offered"> Music</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Suggested Profiles -->
+  <section class="mt-12" id="mainSuggestions">
+    <h3 class="text-xl font-bold mb-4">Suggested Profiles</h3>
+    <div id="suggestedProfiles" class="grid md:grid-cols-3 gap-6"></div>
+    <div class="text-center mt-6">
+      <button onclick="loadMoreSuggestions()" class="px-6 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">More</button>
+    </div>
+  </section>
+
+
+
+<script type="module">
+  import { auth, db } from './firebase.js';
+  import { doc, getDoc, collection, getDocs, query, limit, startAfter } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+  let lastVisible = null;
+
+  function renderProfileCard(user) {
+    const card = document.createElement("div");
+    card.className = "bg-white p-4 rounded-lg shadow-md border mb-2";
+    card.innerHTML = `
+      <img src="${user.photoURL || 'https://i.pravatar.cc/150?u=' + user.uid}" alt="Profile" class="w-12 h-12 rounded-full mx-auto mb-2" />
+      <h4 class="text-sm font-semibold text-center mb-1">${user.name}</h4>
+      <p class="text-xs text-center text-gray-600 mb-1"><strong>Offers:</strong> ${user.skillsOffered?.join(', ') || 'N/A'}</p>
+      <p class="text-xs text-center text-gray-600 mb-1"><strong>Wants:</strong> ${user.skillsWanted?.join(', ') || 'N/A'}</p>
+      <p class="text-xs text-center text-yellow-500">⭐ ${user.rating || 'N/A'}</p>
+    `;
+    return card;
+  }
+
+  window.loadMoreSuggestions = async function () {
+    let q;
+    if (lastVisible) {
+      q = query(collection(db, "users"), startAfter(lastVisible), limit(3));
+    } else {
+      q = query(collection(db, "users"), limit(3));
+    }
+
+    const snapshot = await getDocs(q);
+    const container = document.getElementById("suggestedProfiles");
+
+    if (!snapshot.empty) {
+      lastVisible = snapshot.docs[snapshot.docs.length - 1];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        container.appendChild(renderProfileCard(data));
+      });
+    }
+  }
+
+  window.liveSearchProfiles = async function () {
+    const searchTerm = document.getElementById("searchInput").value.trim().toLowerCase();
+    const suggestBox = document.getElementById("searchSuggestions");
+    suggestBox.innerHTML = "";
+    if (!searchTerm) {
+      suggestBox.classList.add("hidden");
+      return;
+    }
+
+    const snapshot = await getDocs(collection(db, "users"));
+    let found = false;
+    const seenUIDs = new Set();
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      const name = data.name?.toLowerCase() || "";
+      const skillsOffered = (data.skillsOffered || []).map(s => s.toLowerCase());
+      const skillsWanted = (data.skillsWanted || []).map(s => s.toLowerCase());
+
+      if ((name.includes(searchTerm) || skillsOffered.includes(searchTerm) || skillsWanted.includes(searchTerm)) && !seenUIDs.has(data.uid)) {
+        seenUIDs.add(data.uid);
+        suggestBox.appendChild(renderProfileCard(data));
+        found = true;
+      }
+    });
+
+    suggestBox.classList.toggle("hidden", !found);
+    if (!found) suggestBox.innerHTML = "<p class='text-gray-500 text-sm text-center'>No matches found.</p>";
+  }
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const docRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(docRef);
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        document.getElementById("greeting").textContent = `Hello, ${data.name}`;
+        document.getElementById("userPhoto").src = data.photoURL || "https://i.pravatar.cc/48?u=default";
+      }
+    }
+    await loadMoreSuggestions();
+  });
+
+  window.toggleFilters = function () {
+    const panel = document.getElementById("filterPanel");
+    panel.classList.toggle("hidden");
+  };
+</script>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skill Swap - Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-indigo-100 to-purple-100 min-h-screen font-sans">
+
+  <!-- Navbar -->
+  <nav class="bg-white shadow-md py-5 px-10 flex justify-between items-center fixed w-full z-50">
+    <h1 class="text-3xl font-extrabold  text-indigo-600">Skill Swap</h1>
+    <div class="space-x-6">
+      <a href="index.html" class="text-indigo-600 text-lg hover:underline font-medium">Log In</a>
+      <a href="signup.html" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition">Sign Up</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="h-screen flex flex-col items-center justify-center text-center relative pt-24 px-4">
+    <h2 class="text-5xl font-bold text-gray-800 mb-6">  Your skills. Your network.</h2>
+    <p class="text-gray-600 text-xl max-w-2xl">
+      Share your skills with others and learn what you love — for free. Skill Swap connects learners and teachers from all walks of life.
+    </p>
+
+    <!-- Floating Arrow -->
+    <!-- Floating Scroll Arrow -->
+  <a id="scrollArrow"
+   href="#get-started"
+   class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 animate-bounce transition-opacity duration-500">
+  <div class="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow hover:bg-indigo-100 transition">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
+  </div>
+</a>
+
+  </header>
+
+  <!-- Description Section -->
+  <section id="description" class="bg-white py-28 px-6">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+      <!-- Text -->
+      <div>
+        <h3 class="text-4xl font-bold text-gray-800 mb-6">What is Skill Swap?</h3>
+        <p class="text-gray-600 text-xl leading-relaxed mb-6">
+          <strong>Skill Swap</strong> Skill Swap is a platform for people who want to connect — not through followers or likes, but through shared passions. Whether you're into coding, music, photography, or gaming, find your kind of people here.
+        </p>
+        <p class="text-lg text-gray-500 mb-4">
+          🤝 Meet people who share your creative spark.
+          🧠 Find friends who vibe with your passions — from photography to programming.
+          💬 It’s not about teaching. It’s about connecting through what you love.
+        </p>
+        <p class="text-md text-gray-400">
+          Find friends who match your skills or interests.
+        </p>
+      </div>
+
+      <!-- Image -->
+      <div>
+        <img src="https://illustrations.popsy.co/white/personal-growth.svg" alt="Skill Sharing" class="w-full max-w-lg rounded-lg shadow-lg mx-auto" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Get Started Section -->
+  <section id="get-started" class="py-40 px-6 bg-gradient-to-r from-indigo-200 to-purple-200 text-center scroll-mt-24">
+    <h3 class="text-4xl font-bold text-gray-800 mb-6">Ready to Swap Skills?</h3>
+    <p class="text-gray-700 text-xl mb-10 max-w-2xl mx-auto">
+      Join a growing network of curious learners and skilled mentors. It’s simple, free, and built for you.
+    </p>
+    <a href="signup.html"
+       class="bg-indigo-600 hover:bg-indigo-700 text-white px-10 py-4 rounded-full font-semibold text-xl shadow-xl transition">
+      Get Started
+    </a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center text-sm text-gray-500 py-8 bg-white">
+    © 2025 Skill Swap. Built with ❤️ for learners everywhere.
+  </footer>
+  <script>
+  const arrow = document.getElementById("scrollArrow");
+
+  window.addEventListener("scroll", () => {
+    const maxScroll = 300; // Adjust this value to control fade timing
+    const scrollY = window.scrollY;
+
+    // Fade out when scrolling down
+    if (scrollY < maxScroll) {
+      arrow.style.opacity = 1 - scrollY / maxScroll;
+    } else {
+      arrow.style.opacity = 0;
+    }
+  });
+</script>
+
+  </script>
+
+</body>
+</html>
