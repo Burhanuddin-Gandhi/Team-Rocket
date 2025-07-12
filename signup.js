@@ -20,7 +20,7 @@ window.signup = async function () {
     });
 
     alert("Signup successful!");
-    window.location.href = "dashboard.html?role=user";
+    window.location.href = "homepage1.html?role=user";
   } catch (error) {
     alert("Signup failed: " + error.message);
   }
